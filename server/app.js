@@ -1,30 +1,26 @@
 const express = require('express');
-const db = require('./config/db');
-const userRoutes = require('./routes/userRoutes');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const db = require('./db');
+const authRoutes = require('./routes/authRoutes');
 const taskRoutes = require('./routes/taskRoutes');
-const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
-app.use(express.json());
-
-app.use('/users', userRoutes);
+app.use(cors());
+app.use(bodyParser.json());
+app.use('/auth', authRoutes);
 app.use('/tasks', taskRoutes);
-app.use('/admin', adminRoutes);
 
-
-
-
-app.get('/', (req, res) => {
-    res.send('Welcome to the Task Manager!');
+db.connect((err) => {
+    if (err) {
+        console.error('Database connection failed:', err);
+    } else {
+        console.log('Connected to the database');
+    }
 });
 
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something went wrong!');
-});
-
-const PORT = 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
