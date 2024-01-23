@@ -1,32 +1,26 @@
-// utils/jwtUtils.js
-
 const jwt = require('jsonwebtoken');
 
-function generateToken(user) {
-    const payload = {
-        userID: user.UserID,
-        email: user.Email,
-        isAdmin: user.isAdmin,
-    };
+function generateToken(req, res, next) {
 
-    const options = {
-        expiresIn: '24h',
-    };
-
-    return jwt.sign(payload, 'SK test', options);
 }
 
-function verifyToken(token, callback) {
+function verifyToken(req, res, next) {
+    const token = req.header('Authorization');
+
+    if (!token) {
+        return res.status(401).json({ error: 'Access denied, token missing' });
+    }
+
     jwt.verify(token, 'SK test', (err, decoded) => {
         if (err) {
-            return callback(err, null);
+            return next(err);
         }
 
-        return callback(null, decoded);
+        req.user = decoded;
+        next();
     });
 }
 
-module.exports = {
-    generateToken,
-    verifyToken,
-};
+
+
+module.exports = { verifyToken, generateToken };
