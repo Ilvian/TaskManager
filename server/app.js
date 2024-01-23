@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const db = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const taskRoutes = require('./routes/taskRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cookieParser());
 
 app.use('/auth', authRoutes);
 app.use('/tasks', taskRoutes);
+app.use('/admin', adminRoutes);
 
 db.connect((err) => {
     if (err) {
