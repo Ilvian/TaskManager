@@ -35,7 +35,6 @@ const auth = {
                 {
                     message: 'User login successful',
                     user: user[0][0],
-                    token: token
                 });
         } catch (error) {
             console.error('Error logging in user:', error);
