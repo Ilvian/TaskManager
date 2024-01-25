@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { Button, TextField, Link, Box, Grid } from '@mui/material/';
-import api from '../../utils/api';
+import api from '../../api/api';
+
 const Register = (props) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const openForm = () => {
-        props.set(true)
-    }
+        props.set(true);
+    };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
         try {
             const userData = { name, email, password };
             const response = await api.post('/auth/register', userData);
@@ -34,6 +37,9 @@ const Register = (props) => {
                     name="username"
                     autoComplete="username"
                     autoFocus
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+
                 />
 
                 <TextField
@@ -45,6 +51,9 @@ const Register = (props) => {
                     name="email"
                     autoComplete="email"
                     autoFocus
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+
                 />
                 <TextField
                     margin="normal"
@@ -55,6 +64,9 @@ const Register = (props) => {
                     type="password"
                     id="password"
                     autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+
                 />
                 <Button
                     type="submit"

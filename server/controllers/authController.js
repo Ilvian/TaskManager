@@ -24,7 +24,7 @@ const auth = {
             const user = await db.promise().query('SELECT * FROM User WHERE email = ? AND password = ?', [email, password]);
 
             if (!user[0].length) {
-                return res.status(401).json({ message: 'You need to register first' });
+                return res.status(401).json({ message: 'Invalid credentials' });
             }
             const token = jwt.sign({ userId: user[0][0].UserID }, 'secret-key', {
                 expiresIn: '1h',

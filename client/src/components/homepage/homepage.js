@@ -6,7 +6,6 @@ import { createTheme, ThemeProvider, } from '@mui/material/styles';
 import Login from "../auth/Login";
 import Register from "../auth/Register";
 
-
 const defaultTheme = createTheme();
 
 const HomePage = () => {

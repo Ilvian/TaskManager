@@ -39,10 +39,35 @@ const task = {
         }
     },
 
+    getTasksByUserId: async (req, res) => {
+        const userId = req.params.userId;
+
+        try {
+            const [tasks] = await db.promise().query('SELECT * FROM Task WHERE UserID = ?', [userId]);
+
+            if (tasks.length === 0) {
+                return res.status(404).json({ message: 'No tasks found for the specified user' });
+            }
+
+            res.status(200).json({ tasks });
+        } catch (error) {
+            console.error(`Error fetching tasks for user ID ${userId}:`, error);
+            res.status(500).json({ message: 'Server Error' });
+        }
+    },
+
     updateTask: async (req, res) => {
         const taskId = req.params.taskId;
+
+        if (!taskId) {
+            return res.status(400).json({ message: 'Invalid taskId' });
+        }
+    
         try {
             const { taskname, description, status, priority, dueDate } = req.body;
+
+            console.log('Received update request:', req.body);
+            
             const [updatedTask] = await db.promise().query('UPDATE Task SET taskname = ?, description = ?, status = ?, priority = ?, dueDate = ? WHERE taskId = ?',
                 [taskname, description, status, priority, dueDate, taskId]);
 
