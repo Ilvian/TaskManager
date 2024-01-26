@@ -13,10 +13,10 @@ const task = {
 
     createTask: async (req, res) => {
         try {
-            const { taskname, description, status, priority, dueDate } = req.body;
+            const { Taskname, Description, Status, Priority, dueDate } = req.body;
             const { UserID } = req.body;
 
-            const [newTask] = await db.promise().query('INSERT INTO Task (taskname, description, status, priority, dueDate, UserID) VALUES (?, ?, ?, ?, ?, ?)', [taskname, description, status, priority, dueDate, UserID]);
+            const [newTask] = await db.promise().query('INSERT INTO Task (Taskname, Description, Status, Priority, dueDate, UserID) VALUES (?, ?, ?, ?, ?, ?)', [Taskname, Description, Status, Priority, dueDate, UserID]);
 
             res.status(201).json({ message: 'Task created successfully', task: newTask });
         } catch (error) {
@@ -41,7 +41,6 @@ const task = {
 
     getTasksByUserId: async (req, res) => {
         const userId = req.params.userId;
-
         try {
             const [tasks] = await db.promise().query('SELECT * FROM Task WHERE UserID = ?', [userId]);
 
@@ -64,12 +63,12 @@ const task = {
         }
     
         try {
-            const { taskname, description, status, priority, dueDate } = req.body;
+            const { Taskname, Description, Status, Priority, dueDate } = req.body;
 
             console.log('Received update request:', req.body);
             
-            const [updatedTask] = await db.promise().query('UPDATE Task SET taskname = ?, description = ?, status = ?, priority = ?, dueDate = ? WHERE taskId = ?',
-                [taskname, description, status, priority, dueDate, taskId]);
+            const [updatedTask] = await db.promise().query('UPDATE Task SET Taskname = ?, Description = ?, Status = ?, Priority = ?, DueDate = ? WHERE TaskID = ?',
+                [Taskname, Description, Status, Priority, dueDate, taskId]);
 
             if (updatedTask.affectedRows === 0) {
                 return res.status(404).json({ message: 'Task not found' });
