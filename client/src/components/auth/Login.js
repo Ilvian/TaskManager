@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, TextField, Link, Grid, Alert, Stack } from '@mui/material/';
 import api from '../../api/api';
 import { useNavigate } from 'react-router-dom';
@@ -7,11 +7,6 @@ const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorLogin, setErrorLogin] = useState({ status: false, message: "" });
-
-  useEffect(() => {
-    console.log("errorLogin----", errorLogin);
-  }, []);
-
 
   const navigate = useNavigate();
 
@@ -28,9 +23,14 @@ const Login = (props) => {
       });
       if (response.status === 200) {
         console.log('User logged in successfully:', response);
+        const userData = response.data.user;
+        if (userData.isAdmin) {
+          navigate('/users');
+        } else {
+          navigate('/simpleuser');
+        }
         const userId = response.data.user.UserID
         localStorage.setItem('userId', JSON.stringify(userId));
-        navigate('/userpage');
       }
     } catch (error) {
       setErrorLogin({ status: true, message: error.response.data.message })

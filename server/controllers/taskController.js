@@ -13,9 +13,7 @@ const task = {
 
     createTask: async (req, res) => {
         try {
-            const { Taskname, Description, Status, Priority, dueDate } = req.body;
-            const { UserID } = req.body;
-
+            const { Taskname, Description, Status, Priority, dueDate, UserID} = req.body;
             const [newTask] = await db.promise().query('INSERT INTO Task (Taskname, Description, Status, Priority, dueDate, UserID) VALUES (?, ?, ?, ?, ?, ?)', [Taskname, Description, Status, Priority, dueDate, UserID]);
 
             res.status(201).json({ message: 'Task created successfully', task: newTask });
@@ -44,9 +42,9 @@ const task = {
         try {
             const [tasks] = await db.promise().query('SELECT * FROM Task WHERE UserID = ?', [userId]);
 
-            if (tasks.length === 0) {
-                return res.status(404).json({ message: 'No tasks found for the specified user' });
-            }
+            // if (tasks.length === 0) {
+            //     return res.status(404).json({ message: 'No tasks found for the specified user' });
+            // }
 
             res.status(200).json({ tasks });
         } catch (error) {

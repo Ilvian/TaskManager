@@ -4,7 +4,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import HomePage from "./components/homepage/homepage";
-import UserPage from "./components/user/userPage";
+import Users from "./components/admin/user/Users";
+import SimpleUser from "./components/SimpleUser/SimpleUser";
+import AdminPage from "./components/admin/AdminPage";
+
 import reportWebVitals from './reportWebVitals';
 import {
   QueryClient,
@@ -30,7 +33,9 @@ root.render(
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/userpage" element={<UserPage />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/simpleuser" element={<SimpleUser />} />
+
         </Routes>
       </Router>
     </QueryClientProvider>

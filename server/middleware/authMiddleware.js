@@ -7,7 +7,8 @@ function verifyToken(req, res, next) {
     try {
         const decoded = jwt.verify(token, 'secret-key');
         console.log("auth midleware", decoded)
-        req.userId = decoded.userId;
+        req.body.UserID = decoded.userId
+        console.log('req.UserID', req.UserID)
         next();
     } catch (error) {
         res.status(401).json({ error: 'Invalid token' });

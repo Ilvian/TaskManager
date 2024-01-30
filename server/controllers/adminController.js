@@ -21,7 +21,7 @@ const admin = {
         }
     },
 
-    getUserDetails: async (req, res) => {
+    getUserDetailsById: async (req, res) => {
         const userId = req.params.userId;
 
         try {

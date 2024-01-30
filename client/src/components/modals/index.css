@@ -1,0 +1,12 @@
+.input-field {
+    width: 100%;
+}
+
+.input-field>div {
+    margin-bottom: 20px;
+}
+
+.select-options {
+    width: 100%;
+    margin-bottom: 20px;
+}
