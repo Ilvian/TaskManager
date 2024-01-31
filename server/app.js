@@ -7,6 +7,7 @@ const authRoutes = require('./routes/authRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 
+
 const app = express();
 
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));

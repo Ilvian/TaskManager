@@ -30,6 +30,9 @@ const auth = {
                 expiresIn: '1h',
             });
 
+            //console.log("----auth-----", user[0][0]);
+            req.admin = user[0][0];
+
             res.cookie("token", token, { httpOnly: true })
             res.status(200).json(
                 {

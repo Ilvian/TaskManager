@@ -15,5 +15,7 @@ router.get('/tasks', admin.getAllTasks);
 router.get('/tasks/:taskId', admin.getTaskDetails)
 router.put('/tasks/:taskId/edit', admin.editTaskDetails)
 router.delete('/tasks/:taskId/delete', admin.deleteTask);
+router.get('/usersWithTasks', admin.getAllUsersWithTasks);
+router.get('/user/:userId/tasks', admin.getUserTasks);
 
 module.exports = router;
