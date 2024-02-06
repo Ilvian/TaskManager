@@ -6,7 +6,6 @@ import Register from './components/auth/Register';
 import HomePage from "./components/homepage/homepage";
 import Users from "./components/admin/user/Users";
 import SimpleUser from "./components/SimpleUser/SimpleUser";
-import AdminPage from "./components/admin/AdminPage";
 
 import reportWebVitals from './reportWebVitals';
 import {
@@ -14,6 +13,7 @@ import {
   QueryClientProvider,
   MutationCache
 } from '@tanstack/react-query';
+import { TaskProvider } from './components/modals/TaskContext';
 
 const queryClient = new QueryClient({
   mutationCache: new MutationCache({
@@ -26,8 +26,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 
 root.render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
+  // <React.StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <TaskProvider>
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -35,11 +36,12 @@ root.render(
           <Route path="/register" element={<Register />} />
           <Route path="/users" element={<Users />} />
           <Route path="/simpleuser" element={<SimpleUser />} />
-
         </Routes>
       </Router>
-    </QueryClientProvider>
-  </React.StrictMode>
+    </TaskProvider>
+
+  </QueryClientProvider>
+  // </React.StrictMode>
 );
 
 reportWebVitals();

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
     Modal,
     Box,
@@ -7,15 +8,21 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import api from '../../api/api';
 
-const DeleteModal = (props) => {
+const DeleteTaskModal = (props) => {
+    const [showSuccess, setShowSuccess] = useState(false);
 
     const handleDeleteTask = useMutation({
         mutationFn: async (taskId) => {
             try {
                 const result = await api.delete(`tasks/delete/${taskId}`);
+                setShowSuccess(true);
+                setTimeout(() => {
+                    setShowSuccess(false);
+                }, 3000);
                 return result;
             } catch (error) {
                 console.error('Error deleting task:', error);
+                console.log("Server response:", error.response);
                 throw error;
             }
         }
@@ -33,11 +40,17 @@ const DeleteModal = (props) => {
                     <Typography variant="h6" component="div" sx={{ marginBottom: 2 }}>
                         Confirm Deletion
                     </Typography>
-                    <Typography sx={{ marginBottom: 2 }}>Are you sure you want to delete this task?</Typography>
-                    <Button variant="contained" color="error" onClick={handleDeleteConfirm}>Delete</Button>
-                </Box>
-            </Modal>
+                    <Typography sx={{ marginBottom: 2 }}>Are you sure you want to delete this user and the Tasks related?</Typography>
+                    <Button variant="contained" color="error" onClick={handleDeleteConfirm}>Yes</Button>
+                    <Button style={{ float: 'right' }} variant="contained" color="info" onClick={() => props.close(false)}>No</Button>
+            </Box>
+        </Modal >
+        {showSuccess && (
+                <div className="success-tab">
+                    <Typography>User deleted successfully!</Typography>
+                </div>
+            )}
         </>
     )
 }
-export default DeleteModal;
+export default DeleteTaskModal;

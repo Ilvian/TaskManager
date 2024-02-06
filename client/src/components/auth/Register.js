@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
-import { Button, TextField, Link, Box, Grid } from '@mui/material/';
+import { Button, TextField, Link, Box, Grid, Snackbar } from '@mui/material/';
+import MuiAlert from '@mui/material/Alert';
 import api from '../../api/api';
 
 const Register = (props) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
     const openForm = () => {
         props.set(true);
+    };
+
+    const handleCloseSnackbar = () => {
+        setRegistrationSuccess(false);
+    };
+
+    const handleRegistrationSuccess = () => {
+        setRegistrationSuccess(true);
     };
 
     const handleSubmit = async (e) => {
@@ -17,8 +27,8 @@ const Register = (props) => {
         try {
             const userData = { name, email, password };
             const response = await api.post('/auth/register', userData);
-
             console.log('User registered successfully:', response.data);
+            handleRegistrationSuccess();
         } catch (error) {
             console.error('Registration failed:', error.response.data.error);
         }
@@ -27,6 +37,20 @@ const Register = (props) => {
     return (
         <>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <Snackbar
+                    open={registrationSuccess}
+                    autoHideDuration={6000}
+                    onClose={handleCloseSnackbar}
+                >
+                    <MuiAlert
+                        elevation={6}
+                        variant="filled"
+                        onClose={handleCloseSnackbar}
+                        severity="success"
+                    >
+                        Registration successful! You can now sign in.
+                    </MuiAlert>
+                </Snackbar>
 
                 <TextField
                     margin="normal"
@@ -74,7 +98,7 @@ const Register = (props) => {
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                 >
-                    Sign In
+                    Sign Up
                 </Button>
                 <Grid container>
                     <Grid item xs>

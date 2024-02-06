@@ -6,8 +6,7 @@ const db = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const adminRoutes = require('./routes/adminRoutes');
-
-
+require('dotenv').config()
 const app = express();
 
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
@@ -27,7 +26,7 @@ db.connect((err) => {
     }
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

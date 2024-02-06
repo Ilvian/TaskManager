@@ -93,6 +93,7 @@ const admin = {
     },
 
     deleteUser: async (req, res) => {
+        console.log("userId-----")
         const userId = req.params.userId;
 
         try {
@@ -129,16 +130,16 @@ const admin = {
     getAllUsersWithTasks: async (req, res) => {
         try {
             const query = `
-                SELECT User.UserID, User.Name AS UserName, User.Email, Task.TaskID, Task.TaskName, Task.Description, Task.Status, Task.Priority, Task.DueDate
+                SELECT User.UserID, User.Name AS UserName, User.Email, Task.TaskID, Task.Taskname, Task.Description, Task.Status, Task.Priority, Task.DueDate
                 FROM User
                 LEFT JOIN Task ON User.UserID = Task.UserID
             `;
-    
+
             const [usersWithTasks] = await db.promise().query(query);
-    
+
             const usersData = usersWithTasks.reduce((result, row) => {
                 const userId = row.UserID;
-    
+
                 if (!result[userId]) {
                     result[userId] = {
                         UserID: userId,
@@ -147,23 +148,23 @@ const admin = {
                         tasks: []
                     };
                 }
-    
+
                 if (row.TaskID) {
                     result[userId].tasks.push({
                         TaskID: row.TaskID,
-                        TaskName: row.TaskName,
+                        Taskname: row.Taskname,
                         Description: row.Description,
                         Status: row.Status,
                         Priority: row.Priority,
                         DueDate: row.DueDate
                     });
                 }
-    
+
                 return result;
             }, {});
-    
+
             const users = Object.values(usersData);
-    
+
             res.status(200).json({ users });
         } catch (error) {
             console.error('Error getting users with tasks:', error);
@@ -173,16 +174,16 @@ const admin = {
 
     getUserTasks: async (req, res) => {
         const { userId } = req.params;
-    
+
         try {
             const [userTasks] = await db.promise().query('SELECT * FROM Task WHERE UserID = ?', [userId]);
-    
+
             res.status(200).json({ tasks: userTasks });
         } catch (error) {
             console.error('Error getting user tasks:', error);
             res.status(500).json({ error: 'Internal Server Error' });
         }
-    }    
+    }
 
 };
 

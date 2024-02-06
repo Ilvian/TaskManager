@@ -13,12 +13,16 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import api from '../../api/api';
 import "./index.css"
 
-const EditModal = (props) => {
-
+const EditTaskModal = (props) => {
+    const [showSuccess, setShowSuccess] = useState(false);
 
     const handleUpdate = () => {
         console.log("-----", props.task);
         handleUpdateTask.mutate(props.task);
+        setShowSuccess(true);
+        setTimeout(() => {
+            setShowSuccess(false);
+        }, 3000);
         props.close(false);
     }
 
@@ -42,7 +46,7 @@ const EditModal = (props) => {
                     <Typography variant="h6" component="div" sx={{ marginBottom: 2 }}>
                         Create Task
                     </Typography>
-                    <TextField value={props.task.Taskname} name="Taskname" onChange={ props.setTask} className="input-field" />
+                    <TextField value={props.task.Taskname} name="Taskname" onChange={props.setTask} className="input-field" />
                     <InputLabel id="demo-simple-select-label">Status</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
@@ -72,8 +76,14 @@ const EditModal = (props) => {
                     <Button variant="contained" onClick={handleUpdate}>Update</Button>
                 </Box>
             </Modal>
+            {showSuccess && (
+                <div className="success-tab">
+                    Task updated successfully!
+                </div>
+            )}
+
         </>
     )
 }
 
-export default EditModal;
+export default EditTaskModal;

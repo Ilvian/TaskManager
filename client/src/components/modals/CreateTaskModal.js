@@ -13,13 +13,15 @@ import { useMutation } from "@tanstack/react-query";
 import api from '../../api/api';
 import "./index.css";
 
-const CreateModal = (props) => {
+const CreateTaskModal = (props) => {
     const [newTask, setNewTask] = useState({
         Taskname: "",
         Status: "",
         Priority: "",
         Description: "",
     });
+
+    const [showSuccess, setShowSuccess] = useState(false);
 
     const handleCreateSave = () => {
         handleCreateTask.mutate(newTask);
@@ -29,7 +31,13 @@ const CreateModal = (props) => {
     const handleCreateTask = useMutation({
         mutationFn: async (newTaskData) => {
             try {
-                const result = await api.post('tasks/create', newTaskData);
+                const id = localStorage.getItem("userId");
+                const result = await api.post('/tasks/create', { newTaskData, id });
+                console.log("result------", result)
+                setShowSuccess(true);
+                setTimeout(() => {
+                    setShowSuccess(false);
+                }, 3000);
                 return result.data;
             } catch (error) {
                 console.error('Error creating task:', error);
@@ -85,8 +93,13 @@ const CreateModal = (props) => {
                     <Button variant="contained" onClick={handleCreateSave}>Save</Button>
                 </Box>
             </Modal>
+            {showSuccess && (
+                <div className="success-tab">
+                    Task created successfully!
+                </div>
+            )}
         </>
     )
 }
 
-export default CreateModal;
+export default CreateTaskModal;

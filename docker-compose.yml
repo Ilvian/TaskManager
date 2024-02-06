@@ -1,0 +1,42 @@
+version: '3'
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./server/.env
+    environment:
+      HOST: mysql
+    depends_on:
+      - mysql
+    restart: on-failure
+    networks:
+      - my-network
+
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 0106
+      MYSQL_DATABASE: TaskManager
+      MYSQL_USER: Ilvian
+      MYSQL_PASSWORD: 0106
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./server/sqldump:/docker-entrypoint-initdb.d
+    networks:
+      - my-network
+
+networks:
+  my-network:

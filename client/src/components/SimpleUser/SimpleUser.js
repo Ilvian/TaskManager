@@ -1,24 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Button,
-    Paper
-} from "@mui/material";
-import CreateModal from "../modals/CreateModal";
-import EditModal from "../modals/EditModal";
-import DeleteModal from "../modals/DeleteModal";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Paper } from "@mui/material";
+import CreateTaskModal from "../modals/CreateTaskModal";
+import EditTaskModal from "../modals/EditTaskModal";
+import DeleteTaskModal from "../modals/DeleteTaskModal";
 import { useMutation, useQuery } from "@tanstack/react-query";
-
+import { useTask } from '../modals/TaskContext';
 import "./simpleUser.css";
 import api from '../../api/api';
+
 const SimpleUser = () => {
     const navigate = useNavigate();
+    const { taskSuccess, setTaskSuccess } = useTask();
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
@@ -106,9 +99,14 @@ const SimpleUser = () => {
                     </Table>
                 </TableContainer>
             </div>
-            <CreateModal open={openCreate} close={setOpenCreate} />
-            <EditModal setTask={handleChange} open={openEdit} task={task} close={setOpenEdit} />
-            <DeleteModal open={openDelete} id={id} close={setOpenDelete} />
+            <CreateTaskModal open={openCreate} close={setOpenCreate} setTaskSuccess={setTaskSuccess} />
+            <EditTaskModal setTask={handleChange} open={openEdit} task={task} close={setOpenEdit} setTaskSuccess={setTaskSuccess} />
+            <DeleteTaskModal open={openDelete} id={id} close={setOpenDelete} setTaskSuccess={setTaskSuccess} />
+            {taskSuccess && (
+                <div className="success-message">
+                    {/* Task operation successful! */}
+                </div>
+            )}
         </>
     )
 }

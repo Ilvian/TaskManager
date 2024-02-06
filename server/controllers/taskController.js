@@ -13,8 +13,14 @@ const task = {
 
     createTask: async (req, res) => {
         try {
-            const { Taskname, Description, Status, Priority, dueDate, UserID} = req.body;
-            const [newTask] = await db.promise().query('INSERT INTO Task (Taskname, Description, Status, Priority, dueDate, UserID) VALUES (?, ?, ?, ?, ?, ?)', [Taskname, Description, Status, Priority, dueDate, UserID]);
+            console.log(" req.body------", req.body.id);
+            // const { Taskname, Description, Status, Priority, dueDate } = req.body;
+            const [newTask] = await db.promise().query('INSERT INTO Task (Taskname, Description, Status, Priority, UserID) VALUES (?, ?, ?, ?, ?)', [
+                req.body.newTaskData.Taskname,
+                req.body.newTaskData.Description,
+                req.body.newTaskData.Status,
+                req.body.newTaskData.Priority,
+                req.body.id]);
 
             res.status(201).json({ message: 'Task created successfully', task: newTask });
         } catch (error) {
@@ -59,12 +65,12 @@ const task = {
         if (!taskId) {
             return res.status(400).json({ message: 'Invalid taskId' });
         }
-    
+
         try {
             const { Taskname, Description, Status, Priority, dueDate } = req.body;
 
             console.log('Received update request:', req.body);
-            
+
             const [updatedTask] = await db.promise().query('UPDATE Task SET Taskname = ?, Description = ?, Status = ?, Priority = ?, DueDate = ? WHERE TaskID = ?',
                 [Taskname, Description, Status, Priority, dueDate, taskId]);
 
