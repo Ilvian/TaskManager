@@ -26,10 +26,11 @@ services:
   mysql:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: 0106
-      MYSQL_DATABASE: TaskManager
-      MYSQL_USER: Ilvian
-      MYSQL_PASSWORD: 0106
+      - MYSQL_ROOT_PASSWORD=0106
+      - MYSQL_DATABASE=TaskManager
+      - MYSQL_USER=Ilvian
+      - MYSQL_PASSWORD=0106
+      - MYSQL_HOST=localhost
     ports:
       - "3307:3306"
     volumes:

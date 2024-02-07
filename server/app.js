@@ -1,4 +1,5 @@
 const express = require('express');
+require("dotenv").config({ path: "./.env" });
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -18,7 +19,7 @@ app.use('/auth', authRoutes);
 app.use('/tasks', taskRoutes);
 app.use('/admin', adminRoutes);
 
-db.connect((err) => {
+db.getConnection((err) => {
     if (err) {
         console.error('Database connection failed:', err);
     } else {
