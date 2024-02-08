@@ -7,7 +7,8 @@ import {
     TextField,
     InputLabel,
     MenuItem,
-    Select
+    Select,
+    Alert
 } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import api from '../../api/api';
@@ -38,6 +39,11 @@ const EditTaskModal = (props) => {
             }
         }
     })
+
+    const handleCloseAlert = () => {
+        setShowSuccess(false);
+    };
+
 
     return (
         <>
@@ -78,7 +84,9 @@ const EditTaskModal = (props) => {
             </Modal>
             {showSuccess && (
                 <div className="success-tab">
-                    Task updated successfully!
+                    <Alert severity="success" onClose={handleCloseAlert}>
+                        Task updated successfully!
+                    </Alert>
                 </div>
             )}
 

@@ -7,7 +7,8 @@ import {
     TextField,
     InputLabel,
     MenuItem,
-    Select
+    Select,
+    Alert
 } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import api from '../../api/api';
@@ -21,11 +22,20 @@ const CreateTaskModal = (props) => {
         Description: "",
     });
 
-    const [showSuccess, setShowSuccess] = useState(false);
+    const [alertOpen, setAlertOpen] = useState(false);
 
-    const handleCreateSave = () => {
-        handleCreateTask.mutate(newTask);
-        props.close(false)
+    const handleCreateSave = async () => {
+        try {
+            await handleCreateTask.mutateAsync(newTask);
+            setAlertOpen(true);
+            setTimeout(() => {
+                setAlertOpen(false);
+                props.close(false);
+            }, 3000);
+        } catch (error) {
+            console.error('Error creating task:', error);
+        }
+        props.close(false);
     }
 
     const handleCreateTask = useMutation({
@@ -33,18 +43,13 @@ const CreateTaskModal = (props) => {
             try {
                 const id = localStorage.getItem("userId");
                 const result = await api.post('/tasks/create', { newTaskData, id });
-                console.log("result------", result)
-                setShowSuccess(true);
-                setTimeout(() => {
-                    setShowSuccess(false);
-                }, 3000);
                 return result.data;
             } catch (error) {
                 console.error('Error creating task:', error);
                 throw error;
             }
         }
-    })
+    });
 
     const handleChange = (e) => {
         const value = e.target.value;
@@ -54,6 +59,9 @@ const CreateTaskModal = (props) => {
         })
     }
 
+    const handleCloseAlert = () => {
+        setAlertOpen(false);
+    }
 
     return (
         <>
@@ -93,9 +101,11 @@ const CreateTaskModal = (props) => {
                     <Button variant="contained" onClick={handleCreateSave}>Save</Button>
                 </Box>
             </Modal>
-            {showSuccess && (
+            {alertOpen && (
                 <div className="success-tab">
-                    Task created successfully!
+                    <Alert severity="success" onClose={handleCloseAlert}>
+                        Task created successfully!
+                    </Alert>
                 </div>
             )}
         </>

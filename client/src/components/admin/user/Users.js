@@ -25,6 +25,8 @@ import EditTaskModal from "../../modals/EditTaskModal";
 import DeleteTaskModal from "../../modals/DeleteTaskModal";
 import DeleteUserModal from "../../modals/DeleteUserModal";
 import api from "../../../api/api";
+import logo from './images/logo.png';
+import "./index.css"
 
 function Row(props) {
     const { row } = props;
@@ -100,8 +102,8 @@ function Row(props) {
                                         <TableCell>Description</TableCell>
                                         <TableCell>Status</TableCell>
                                         <TableCell>Priority</TableCell>
-                                        <TableCell>Edit</TableCell>
-                                        <TableCell>Delete</TableCell>
+                                        <TableCell> </TableCell>
+                                        <TableCell> </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -132,8 +134,8 @@ function Row(props) {
                                             })
                                             :
                                             <TableRow>
-                                                <TableCell colSpan={3} />
-                                                <TableCell>
+                                                <TableCell colSpan={2} />
+                                                <TableCell colSpan={2}>
                                                     <Alert severity="info">This user has not created any tasks.</Alert>
                                                 </TableCell>
                                                 <TableCell colSpan={3} />
@@ -181,29 +183,28 @@ const Users = () => {
 
     return (
         <>
+            <div className="logo-conatiner">
+                <img src={logo} alt="Logo" className="logo" />
+                <div className="logout_button">
+                    <Button variant="contained" color="primary" onClick={handleLogout}>
+                                Logout
+                            </Button>
+                            </div>
+
+            </div>
+
             {data && (
                 <Box sx={{ display: 'flex' }}>
-                    <Box
-                        component="main"
-                        sx={{
-                            backgroundColor: (theme) =>
-                                theme.palette.mode === 'light'
-                                    ? theme.palette.grey[100]
-                                    : theme.palette.grey[900],
-                            flexGrow: 1,
-                            height: '100vh',
-                            overflow: 'auto',
-                        }}
-                    >
+                    <TableContainer component={Paper}>
                         <Toolbar>
                             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                                 {/* Users with Tasks */}
                             </Typography>
-                            <Button variant="contained" color="primary" onClick={handleLogout}>
+                            {/* <Button variant="contained" color="primary" onClick={handleLogout}>
                                 Logout
-                            </Button>
+                            </Button> */}
                         </Toolbar>
-                        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                        <Table sx={{ tableLayout: "auto" }} aria-label="simple table">
                             <Grid container spacing={3}>
                                 <Grid item xs={12} md={12} lg={12}>
                                     <Paper
@@ -213,9 +214,9 @@ const Users = () => {
                                             flexDirection: 'column',
                                         }}
                                     >
-                                        <Typography variant="h6" gutterBottom component="div">
+                                        {/* <Typography variant="h6" gutterBottom component="div">
                                             Users with Tasks
-                                        </Typography>
+                                        </Typography> */}
                                         <TableContainer component={Paper}>
                                             <Table aria-label="collapsible table">
                                                 <TableHead>
@@ -242,8 +243,8 @@ const Users = () => {
                                     </Paper>
                                 </Grid>
                             </Grid>
-                        </Container>
-                    </Box>
+                        </Table>
+                    </TableContainer>
                 </Box>
             )}
         </>

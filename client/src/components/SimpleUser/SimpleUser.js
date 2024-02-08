@@ -8,6 +8,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTask } from '../modals/TaskContext';
 import "./simpleUser.css";
 import api from '../../api/api';
+import logo from './images/logo.png';
 
 const SimpleUser = () => {
     const navigate = useNavigate();
@@ -60,9 +61,22 @@ const SimpleUser = () => {
 
     return (
         <>
+            <div className="logo-container">
+                <img src={logo} alt="Logo" className="logo" />
+            </div>
+            <div className="logout-button-container">
+            <Button variant="contained" onClick={handleLogout} className="button-style-logo">Logout</Button>
+        </div>
+
+            <div className="header">
+                <div>
+                    <Button variant="contained" color="success" onClick={() => { setOpenCreate(true); }} className="button-style">Create</Button>
+                </div>
+                {/* <div>
+                    <Button variant="contained" onClick={handleLogout} className="button-style-logo">Logout</Button>
+                </div> */}
+            </div>
             <div className="table-container">
-                <Button variant="contained" onClick={() => { setOpenCreate(true); }} className="button-style">Create</Button>
-                <Button variant="contained" onClick={handleLogout} className="button-style">Logout</Button>
                 <TableContainer component={Paper}>
                     <Table sx={{ tableLayout: "auto" }} aria-label="simple table">
                         <TableHead>
@@ -91,7 +105,7 @@ const SimpleUser = () => {
                                         }}>Edit</Button>
                                     </TableCell>
                                     <TableCell sx={{ width: "5%" }}>
-                                        <Button variant="contained" onClick={() => handleDelete(task.TaskID)}>Delete</Button>
+                                        <Button variant="contained" color="error" onClick={() => handleDelete(task.TaskID)}>Delete</Button>
                                     </TableCell>
                                 </TableRow>
                             ))}

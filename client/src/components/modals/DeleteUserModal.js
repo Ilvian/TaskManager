@@ -3,7 +3,8 @@ import {
     Modal,
     Box,
     Typography,
-    Button
+    Button,
+    Alert
 } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import api from '../../api/api';
@@ -21,16 +22,23 @@ const DeleteUserModal = (props) => {
             try {
                 const result = await api.delete(`admin/users/${props.id}/delete`);
                 setShowSuccess(true);
-                setTimeout(() => {
-                    setShowSuccess(false);
-                }, 3000);
                 return result;
             } catch (error) {
-                console.error("Error updating task:", error);
+                console.error("Error deleting user:", error);
                 throw error;
             }
+        },
+        onSuccess: () => {
+            setTimeout(() => {
+                setShowSuccess(false);
+                props.close(false);
+            }, 3000);
         }
-    })
+    });
+
+    const handleCloseAlert = () => {
+        setShowSuccess(false);
+    };
 
     return (
         <>
@@ -46,10 +54,11 @@ const DeleteUserModal = (props) => {
             </Modal >
             {showSuccess && (
                 <div className="success-tab">
-                    User deleted successfully!
+                    <Alert severity="success" onClose={handleCloseAlert}>
+                        User deleted successfully!
+                    </Alert>
                 </div>
             )}
-
         </>
     );
 };
